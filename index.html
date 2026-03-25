@@ -1,333 +1,546 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>RTO TP Form Pro - mSalihKc</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
 
     <style>
-        :root {
-            --primary: #2563eb;
-            --bg: #f1f5f9;
-            --accent: #ef4444;
-        }
-        
-        body {
-            font-family: "Montserrat", sans-serif;
-            margin: 0;
-            background: var(--bg);
-            color: #1e293b;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
+      :root {
+        --primary: #2563eb;
+        --bg: #f1f5f9;
+        --accent: #ef4444;
+      }
+      body {
+        font-family: "Montserrat", sans-serif;
+        margin: 0;
+        background: var(--bg);
+        color: #1e293b;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        flex: 1;
+      }
+      .form-card {
+        width: 100%;
+        max-width: 900px;
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        margin-bottom: 40px;
+        box-sizing: border-box;
+      }
+      .grid-inputs {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+      }
+      .input-group {
+        display: flex;
+        flex-direction: column;
+      }
 
-        /* --- Layout --- */
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-            flex: 1;
-        }
+      /* --- Vehicle Number Multi-Input Styling --- */
+      .v-num-wrapper {
+        display: flex;
+        align-items: center;
+        /* This makes it look like a single input box */
+        border: 1px solid #cbd5e1;
+        border-radius: 6px;
+        padding: 2px 10px;
+        background: #fff;
+        width: fit-content;
+        transition: border-color 0.2s;
+      }
 
-        /* --- Form Section --- */
-        .form-card {
-            width: 100%;
-            max-width: 900px;
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            margin-bottom: 40px;
-            box-sizing: border-box;
-        }
-        
-        .grid-inputs {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-        }
+      /* Highlight the whole "box" when an internal input is clicked */
+      .v-num-wrapper:focus-within {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+      }
 
-        .input-group {
-            display: flex;
-            flex-direction: column;
-        }
+      .v-num-wrapper input {
+        border: none;
+        outline: none;
+        text-align: center;
+        padding: 8px 0;
+        font-size: 16px;
+        color: #334155;
+        background: transparent;
+      }
 
-        label {
-            font-size: 10px;
-            font-weight: 700;
-            text-transform: uppercase;
-            color: #64748b;
-            margin-bottom: 5px;
-        }
+      /* Specific widths for a cleaner look */
+      #in-vn1,
+      #in-vn2 {
+        width: 30px;
+      }
+      #in-vn3 {
+        width: 40px;
+      }
+      #in-vn4 {
+        width: 55px;
+      }
 
-        input {
-            padding: 10px;
-            border: 1px solid #e2e8f0;
-            border-radius: 6px;
-            font-family: "Montserrat";
-            font-size: 14px;
-            outline: none;
-        }
-        
-        input:focus {
-            border-color: var(--primary);
-        }
+      .v-num-sep {
+        font-weight: bold;
+        color: #94a3b8;
+        padding: 0 2px;
+      }
 
-        .btn-row {
-            margin-top: 25px;
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
+      label {
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: #64748b;
+        margin-bottom: 5px;
+      }
+      input {
+        padding: 10px;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        font-family: "Montserrat";
+        font-size: 14px;
+        outline: none;
+      }
+      input:focus {
+        border-color: var(--primary);
+      }
+      .btn-row {
+        margin-top: 25px;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .btn {
+        border: none;
+        padding: 15px 25px;
+        border-radius: 8px;
+        font-weight: 700;
+        cursor: pointer;
+        flex: 1;
+        transition: opacity 0.2s;
+      }
+      .btn-save {
+        background: #0f172a;
+        color: white;
+      }
+      .btn-print {
+        background: var(--primary);
+        color: white;
+        font-size: 16px;
+      }
+      .btn-reset {
+        background: #cbd5e1;
+        color: #1e293b;
+        max-width: 120px;
+      }
 
-        .btn {
-            border: none;
-            padding: 15px 25px;
-            border-radius: 8px;
-            font-weight: 700;
-            cursor: pointer;
-            flex: 1;
-            transition: opacity 0.2s;
-        }
-        
-        .btn:active { opacity: 0.8; }
+      .preview-window {
+        width: 100%;
+        overflow-x: auto;
+        background: #94a3b8;
+        padding: 20px;
+        border-radius: 8px;
+        display: flex;
+        justify-content: center;
+        box-sizing: border-box;
+      }
+      .a4-page {
+        width: 210mm;
+        height: 297mm;
+        background-color: white;
+        background-image: url("TPForm_img.jpg");
+        background-size: 100% 100%;
+        position: relative;
+        flex-shrink: 0;
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+      }
 
-        .btn-save {
-            background: #0f172a;
-            color: white;
-        }
+      .data-point {
+        position: absolute;
+        color: #000;
+        font-weight: 600;
+        font-size: 15px;
+        cursor: move;
+        white-space: nowrap;
+      }
 
-        .btn-print {
-            background: var(--primary);
-            color: white;
-            font-size: 16px;
-        }
+      /* --- The Fraction/Divider Line Styling --- */
+      .divider-line {
+        height: 2px;
+        background: black;
+        width: 70px;
+        min-width: 20px;
+      }
 
-        .btn-reset {
-            background: #cbd5e1;
-            color: #1e293b;
-            max-width: 120px;
-        }
+      footer {
+        padding: 30px 0;
+        text-align: center;
+        font-size: 14px;
+        font-weight: 600;
+        color: #64748b;
+      }
+      .portfolio-link {
+        color: var(--accent);
+        text-decoration: none;
+      }
 
-        /* --- Preview Window --- */
-        .preview-label {
-            font-weight: 700;
-            margin-bottom: 10px;
-            color: #475569;
+      @media print {
+        @page {
+          margin: 0;
         }
-
-        .preview-window {
-            width: 100%;
-            overflow-x: auto;
-            background: #94a3b8;
-            padding: 20px;
-            border-radius: 8px;
-            display: flex;
-            justify-content: center;
-            box-sizing: border-box;
-        }
-
-        /* --- THE A4 PAGE --- */
-        .a4-page {
-            width: 210mm;
-            height: 297mm;
-            background-color: white;
-            background-image: url("TPForm_img.jpg");
-            background-size: 100% 100%;
-            position: relative;
-            flex-shrink: 0;
-            print-color-adjust: exact;
-            -webkit-print-color-adjust: exact;
-        }
-
-        .data-point {
-            position: absolute;
-            color: #000;
-            font-weight: 600;
-            font-size: 15px;
-            cursor: move;
-            white-space: nowrap;
-        }
-
-        /* --- Footer --- */
+        .form-card,
+        .preview-label,
+        .btn-row,
         footer {
-            padding: 30px 0;
-            text-align: center;
-            font-size: 14px;
-            font-weight: 600;
-            color: #64748b;
+          display: none !important;
         }
-
-        .portfolio-link {
-            color: var(--accent);
-            text-decoration: none;
-            transition: color 0.3s;
+        body,
+        .container,
+        .preview-window {
+          background: white;
+          padding: 0;
+          margin: 0;
+          display: block;
         }
-
-        .portfolio-link:hover {
-            color: var(--primary);
-            text-decoration: underline;
+        .a4-page {
+          box-shadow: none;
+          margin: 0;
+          border: none;
         }
-
-        /* --- PRINT LOGIC --- */
-        @media print {
-            @page { margin: 0; }
-            .form-card, .preview-label, .btn-row, footer {
-                display: none !important;
-            }
-            body, .container, .preview-window {
-                background: white;
-                padding: 0;
-                margin: 0;
-                display: block;
-            }
-            .a4-page {
-                box-shadow: none;
-                margin: 0;
-                border: none;
-            }
-            .is-empty {
-                display: none !important;
-            }
+        .is-empty {
+          display: none !important;
         }
-
-        @media (max-width: 600px) {
-            .grid-inputs { grid-template-columns: 1fr; }
-        }
+      }
     </style>
-</head>
-<body>
-
+  </head>
+  <body>
     <div class="container">
-        <div class="form-card">
-            <h2 style="margin-top: 0; color: var(--primary)">RTO TP Form Entry</h2>
-            <div id="inputs" class="grid-inputs"></div>
+      <div class="form-card">
+        <h2 style="margin-top: 0; color: var(--primary)">RTO TP Form Entry</h2>
 
-            <div class="btn-row">
-                <button class="btn btn-save" onclick="saveData()">💾 SAVE DATA & POSITIONS</button>
-                <button class="btn btn-print" onclick="window.print()">🖨️ PRINT FORM</button>
-                <button class="btn btn-reset" onclick="resetForm()">🔄 RESET</button>
-            </div>
+        <label>Vehicle Number</label>
+        <div class="v-num-wrapper" style="margin-bottom: 20px">
+          <input
+            type="text"
+            id="in-vn1"
+            placeholder="KL"
+            maxlength="2"
+            oninput="this.value = this.value.toUpperCase(); updateText('vn1', this.value)"
+          />
+          <span class="v-num-sep">-</span>
+          <input
+            type="text"
+            id="in-vn2"
+            placeholder="11"
+            maxlength="2"
+            oninput="updateText('vn2', this.value)"
+          />
+          <span class="v-num-sep">-</span>
+          <input
+            type="text"
+            id="in-vn3"
+            placeholder="XX"
+            maxlength="2"
+            oninput="this.value = this.value.toUpperCase(); updateText('vn3', this.value)"
+          />
+          <span class="v-num-sep">-</span>
+          <input
+            type="text"
+            id="in-vn4"
+            placeholder="0000"
+            maxlength="4"
+            oninput="updateText('vn4', this.value)"
+          />
         </div>
 
-        <div class="preview-label">Live Preview (Drag items to align)</div>
-        <div class="preview-window">
-            <div class="a4-page" id="form-page"></div>
+        <div id="inputs" class="grid-inputs"></div>
+
+        <div class="btn-row">
+          <button class="btn btn-save" onclick="saveData()">
+            💾 SAVE DATA & POSITIONS
+          </button>
+          <button class="btn btn-print" onclick="window.print()">
+            🖨️ PRINT FORM
+          </button>
+          <button class="btn btn-reset" onclick="resetForm()">🔄 RESET</button>
         </div>
-        
-        <footer>
-            made with ❤️ 
-            <a href="https://msalihkc.github.io/mskc_pf/" class="portfolio-link" target="_blank">mSalihKc</a>
-        </footer>
+      </div>
+
+      <div class="preview-window">
+        <div class="a4-page" id="form-page">
+          <div
+            id="v-line1"
+            class="data-point divider-line"
+            style="top: 540px; left: 300px"
+          ></div>
+        </div>
+      </div>
+
+      <footer>
+        made with ❤️
+        <a
+          href="https://msalihkc.github.io/mskc_pf/"
+          class="portfolio-link"
+          target="_blank"
+          >mSalihKc</a
+        >
+      </footer>
     </div>
 
     <script>
-        // Custom Date Format: DD/MM/YYYY
-        const d = new Date();
-        const formattedDate = `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
+      const d = new Date();
+      const formattedDate = `${String(d.getDate()).padStart(2, "0")}/${String(d.getMonth() + 1).padStart(2, "0")}/${d.getFullYear()}`;
 
-        const fields = [
-            { id: "rto",      label: "RTO Office",      default: "Kozhikode", top: "183px",  left: "97px" },
-            { id: "name",     label: "Full Name",       default: "",          top: "312px",  left: "400px" },
-            { id: "guardian", label: "Father/Husband",  default: "",          top: "358px",  left: "400px" },
-            { id: "addr1",    label: "Address Line 1",  default: "",          top: "384px",  left: "400px" },
-            { id: "addr2",    label: "Address Line 2",  default: "",          top: "410px",  left: "400px" },
-            { id: "addr3",    label: "Address Line 3",  default: "",          top: "436px",  left: "400px" },
-            { id: "purpose",  label: "Purpose",         default: "For the convenience of Public", top: "481px", left: "400px" },
-            { id: "goods",    label: "Nature of Goods", default: "P/L Only",   top: "525px",  left: "400px" },
-            { id: "route",    label: "Route/Area",      default: "Mavoor To Kozhikode", top: "554px", left: "400px" },
-            { id: "dur",      label: "Duration",        default: "20 Days",   top: "579px",  left: "400px" },
-            { id: "cap",      label: "Seating Capacity",default: "38",        top: "626px",  left: "425px" },
-            { id: "reg",      label: "Reg Mark",        default: "KL-",       top: "679px",  left: "425px" },
-            { id: "ch",       label: "Chalan No",       default: "",          top: "743px",  left: "311px" },
-            { id: "amt",      label: "Amount Rs",       default: "610/-",     top: "770px",  left: "517px" },
-            { id: "date",     label: "Date",            default: formattedDate, top: "1001px", left: "140px" }
-        ];
+      // Added vn1, vn2, vn3, vn4 as individual fields
+      const fields = [
+        {
+          id: "vn1",
+          label: "State",
+          default: "KL",
+          top: "540px",
+          left: "300px",
+        },
+        {
+          id: "vn2",
+          label: "Dist",
+          default: "",
+          top: "540px",
+          left: "330px",
+        },
+        {
+          id: "vn3",
+          label: "Series",
+          default: "",
+          top: "560px",
+          left: "290px",
+        },
+        {
+          id: "vn4",
+          label: "Num",
+          default: "",
+          top: "560px",
+          left: "320px",
+        },
+        {
+          id: "rto",
+          label: "RTO Office",
+          default: "Kozhikode",
+          top: "183px",
+          left: "97px",
+        },
+        {
+          id: "name",
+          label: "Full Name",
+          default: "",
+          top: "312px",
+          left: "400px",
+        },
+        {
+          id: "guardian",
+          label: "Father/Husband",
+          default: "",
+          top: "358px",
+          left: "400px",
+        },
+        {
+          id: "addr1",
+          label: "Address Line 1",
+          default: "",
+          top: "384px",
+          left: "400px",
+        },
+        {
+          id: "addr2",
+          label: "Address Line 2",
+          default: "",
+          top: "410px",
+          left: "400px",
+        },
+        {
+          id: "addr3",
+          label: "Address Line 3",
+          default: "",
+          top: "436px",
+          left: "400px",
+        },
+        {
+          id: "purpose",
+          label: "Purpose",
+          default: "For the convenience of Public",
+          top: "481px",
+          left: "400px",
+        },
+        {
+          id: "goods",
+          label: "Nature of Goods",
+          default: "P/L Only",
+          top: "525px",
+          left: "400px",
+        },
+        {
+          id: "route",
+          label: "Route/Area",
+          default: "Mavoor To Kozhikode",
+          top: "554px",
+          left: "400px",
+        },
+        {
+          id: "dur",
+          label: "Duration",
+          default: "20 Days",
+          top: "579px",
+          left: "400px",
+        },
+        {
+          id: "cap",
+          label: "Seating Capacity",
+          default: "38",
+          top: "626px",
+          left: "425px",
+        },
+        {
+          id: "reg",
+          label: "Reg Mark",
+          default: "KL-",
+          top: "679px",
+          left: "425px",
+        },
+        {
+          id: "ch",
+          label: "Chalan No",
+          default: "",
+          top: "743px",
+          left: "311px",
+        },
+        {
+          id: "amt",
+          label: "Amount Rs",
+          default: "610/-",
+          top: "770px",
+          left: "517px",
+        },
+        {
+          id: "date",
+          label: "Date",
+          default: formattedDate,
+          top: "1001px",
+          left: "140px",
+        },
+      ];
 
-        const inputContainer = document.getElementById("inputs");
-        const pageContainer = document.getElementById("form-page");
-        
-        // Load stored data
-        const savedPos = JSON.parse(localStorage.getItem("rto_positions_final")) || {};
-        const savedData = JSON.parse(localStorage.getItem("rto_saved_data")) || {};
+      const inputContainer = document.getElementById("inputs");
+      const pageContainer = document.getElementById("form-page");
+      const savedPos =
+        JSON.parse(localStorage.getItem("rto_positions_final")) || {};
+      const savedData =
+        JSON.parse(localStorage.getItem("rto_saved_data")) || {};
 
+      fields.forEach((f) => {
+        const currentVal =
+          savedData[f.id] !== undefined ? savedData[f.id] : f.default;
+
+        // Only add to grid if it's NOT one of the vehicle number parts (we handled those manually above)
+        if (!f.id.startsWith("vn")) {
+          inputContainer.innerHTML += `
+                    <div class="input-group">
+                        <label>${f.label}</label>
+                        <input type="text" id="in-${f.id}" value="${currentVal}" oninput="updateText('${f.id}', this.value)">
+                    </div>`;
+        } else {
+          // For vehicle number parts, just update the manual input values
+          document.getElementById(`in-${f.id}`).value = currentVal;
+        }
+
+        const pos = savedPos[f.id] || { top: f.top, left: f.left };
+        const el = document.createElement("div");
+        el.id = `v-${f.id}`;
+        el.className =
+          "data-point " + (currentVal.trim() === "" ? "is-empty" : "");
+        el.style.top = pos.top;
+        el.style.left = pos.left;
+        el.innerText = currentVal || `[${f.id}]`;
+
+        pageContainer.appendChild(el);
+        makeDraggable(el, f.id);
+      });
+
+      // Make the special divider line draggable too
+      const lineEl = document.getElementById("v-line1");
+      lineEl.style.top = savedPos["line1"]?.top || "558px";
+      lineEl.style.left = savedPos["line1"]?.left || "290px";
+      makeDraggable(lineEl, "line1");
+
+      function updateText(id, val) {
+        const target = document.getElementById("v-" + id);
+        if (val.trim() === "") {
+          target.innerText = "[" + id + "]";
+          target.classList.add("is-empty");
+        } else {
+          target.innerText = val;
+          target.classList.remove("is-empty");
+        }
+      }
+
+      function makeDraggable(el, id) {
+        let isDragging = false;
+        el.onmousedown = (e) => {
+          isDragging = true;
+          let shiftX = e.clientX - el.getBoundingClientRect().left;
+          let shiftY = e.clientY - el.getBoundingClientRect().top;
+          document.onmousemove = (e) => {
+            if (!isDragging) return;
+            let p = pageContainer.getBoundingClientRect();
+            el.style.left = e.clientX - p.left - shiftX + "px";
+            el.style.top = e.clientY - p.top - shiftY + "px";
+          };
+          document.onmouseup = () => {
+            isDragging = false;
+            document.onmousemove = null;
+          };
+        };
+      }
+
+      function saveData() {
+        const positions = {};
+        const formData = {};
         fields.forEach((f) => {
-            const currentVal = savedData[f.id] !== undefined ? savedData[f.id] : f.default;
-
-            // 1. Create Inputs
-            inputContainer.innerHTML += `
-                <div class="input-group">
-                    <label>${f.label}</label>
-                    <input type="text" id="in-${f.id}" value="${currentVal}" oninput="updateText('${f.id}', this.value)">
-                </div>`;
-
-            // 2. Create Preview Labels
-            const pos = savedPos[f.id] || { top: f.top, left: f.left };
-            const el = document.createElement("div");
-            el.id = `v-${f.id}`;
-            el.className = "data-point " + (currentVal.trim() === "" ? "is-empty" : "");
-            el.style.top = pos.top;
-            el.style.left = pos.left;
-            el.innerText = currentVal || `[${f.label}]`;
-
-            pageContainer.appendChild(el);
-            makeDraggable(el, f.id);
+          const el = document.getElementById(`v-${f.id}`);
+          const val = document.getElementById(`in-${f.id}`).value;
+          positions[f.id] = { top: el.style.top, left: el.style.left };
+          formData[f.id] = val;
         });
+        // Save the line position separately
+        const line = document.getElementById("v-line1");
+        positions["line1"] = { top: line.style.top, left: line.style.left };
 
-        function updateText(id, val) {
-            const target = document.getElementById("v-" + id);
-            if (val.trim() === "") {
-                target.innerText = "[" + id.toUpperCase() + "]";
-                target.classList.add("is-empty");
-            } else {
-                target.innerText = val;
-                target.classList.remove("is-empty");
-            }
-        }
+        localStorage.setItem("rto_positions_final", JSON.stringify(positions));
+        localStorage.setItem("rto_saved_data", JSON.stringify(formData));
+        alert("Vehicle details and positions saved!");
+      }
 
-        function makeDraggable(el, id) {
-            let isDragging = false;
-            el.onmousedown = (e) => {
-                isDragging = true;
-                let shiftX = e.clientX - el.getBoundingClientRect().left;
-                let shiftY = e.clientY - el.getBoundingClientRect().top;
-                document.onmousemove = (e) => {
-                    if (!isDragging) return;
-                    let p = pageContainer.getBoundingClientRect();
-                    el.style.left = e.clientX - p.left - shiftX + "px";
-                    el.style.top = e.clientY - p.top - shiftY + "px";
-                };
-                document.onmouseup = () => { isDragging = false; document.onmousemove = null; };
-            };
-            el.ondragstart = () => false;
+      function resetForm() {
+        if (confirm("Clear form?")) {
+          fields.forEach((f) => {
+            const input = document.getElementById(`in-${f.id}`);
+            if (input) input.value = "";
+            updateText(f.id, "");
+          });
+          localStorage.removeItem("rto_saved_data");
         }
-
-        function saveData() {
-            const positions = {};
-            const formData = {};
-            fields.forEach((f) => {
-                const el = document.getElementById(`v-${f.id}`);
-                const val = document.getElementById(`in-${f.id}`).value;
-                positions[f.id] = { top: el.style.top, left: el.style.left };
-                formData[f.id] = val;
-            });
-            localStorage.setItem("rto_positions_final", JSON.stringify(positions));
-            localStorage.setItem("rto_saved_data", JSON.stringify(formData));
-            alert("All progress saved!");
-        }
-
-        function resetForm() {
-            if(confirm("Clear all entered data? Positions will remain saved.")) {
-                fields.forEach(f => {
-                    document.getElementById(`in-${f.id}`).value = "";
-                    updateText(f.id, "");
-                });
-                localStorage.removeItem("rto_saved_data");
-            }
-        }
+      }
     </script>
-</body>
+  </body>
 </html>
