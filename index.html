@@ -1,418 +1,333 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>RTO Form Filler</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <title>RTO TP Form Pro - mSalihKc</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet" />
 
     <style>
-      :root {
-        --primary: #2563eb;
-        --bg: #f1f5f9;
-      }
-      body {
-        font-family: "Montserrat", sans-serif;
-        margin: 0;
-        background: var(--bg);
-        color: #1e293b;
-      }
-
-      /* --- Layout --- */
-      .container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 20px;
-      }
-
-      /* --- Form Section --- */
-      .form-card {
-        width: 100%;
-        max-width: 900px;
-        background: white;
-        padding: 30px;
-        border-radius: 12px;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        margin-bottom: 40px;
-        box-sizing: border-box;
-      }
-      .grid-inputs {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 15px;
-      }
-      .input-group {
-        display: flex;
-        flex-direction: column;
-      }
-      label {
-        font-size: 10px;
-        font-weight: 700;
-        text-transform: uppercase;
-        color: #64748b;
-        margin-bottom: 5px;
-      }
-      input {
-        padding: 10px;
-        border: 1px solid #e2e8f0;
-        border-radius: 6px;
-        font-family: "Montserrat";
-        font-size: 14px;
-      }
-
-      .btn-row {
-        margin-top: 25px;
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-      }
-      .btn {
-        border: none;
-        padding: 15px 25px;
-        border-radius: 8px;
-        font-weight: 700;
-        cursor: pointer;
-        flex: 1;
-      }
-      .btn-save {
-        background: #0f172a;
-        color: white;
-      }
-      .btn-print {
-        background: var(--primary);
-        color: white;
-        font-size: 16px;
-      }
-
-      /* --- Preview Window --- */
-      .preview-label {
-        font-weight: 700;
-        margin-bottom: 10px;
-        color: #475569;
-      }
-      .preview-window {
-        width: 100%;
-        overflow-x: auto;
-        background: #94a3b8;
-        padding: 20px;
-        border-radius: 8px;
-        display: flex;
-        justify-content: center;
-        box-sizing: border-box;
-      }
-
-      /* --- THE A4 PAGE --- */
-      .a4-page {
-        width: 210mm;
-        height: 297mm;
-        background-color: white;
-        background-image: url("TPForm_img.jpg");
-        background-size: 100% 100%;
-        position: relative;
-        flex-shrink: 0;
-        /* Ensures background prints in modern browsers */
-        print-color-adjust: exact;
-        -webkit-print-color-adjust: exact;
-      }
-
-      .data-point {
-        position: absolute;
-        color: #000;
-        font-weight: 600;
-        font-size: 15px;
-        cursor: move;
-        white-space: nowrap;
-      }
-
-      /* --- PRINT LOGIC --- */
-      @media print {
-        /* Removes Browser Headers and Footers */
-        @page {
-          margin: 0;
+        :root {
+            --primary: #2563eb;
+            --bg: #f1f5f9;
+            --accent: #ef4444;
+        }
+        
+        body {
+            font-family: "Montserrat", sans-serif;
+            margin: 0;
+            background: var(--bg);
+            color: #1e293b;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
-        .form-card,
-        .preview-label,
-        .btn-row {
-          display: none !important;
-        }
-        body,
-        .container,
-        .preview-window {
-          background: white;
-          padding: 0;
-          margin: 0;
-          display: block;
-        }
-        .a4-page {
-          box-shadow: none;
-          margin: 0;
-          border: none;
+        /* --- Layout --- */
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            flex: 1;
         }
 
-        /* Hide if data is empty */
-        .is-empty {
-          display: none !important;
+        /* --- Form Section --- */
+        .form-card {
+            width: 100%;
+            max-width: 900px;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+            box-sizing: border-box;
         }
-      }
-
-      @media (max-width: 600px) {
+        
         .grid-inputs {
-          grid-template-columns: 1fr;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
         }
-      }
 
-      /* --- Footer Styling --- */
-      footer {
-        width: 100%;
-        padding: 20px 0;
-        text-align: center;
-        font-size: 14px;
-        font-weight: 600;
-        color: #64748b;
-        margin-top: auto; /* Pushes to bottom if using flex column */
-      }
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
 
-      .portfolio-link {
-        color: #ef4444; /* A nice Red/Coral color instead of blue */
-        text-decoration: none;
-        transition: color 0.3s ease;
-      }
+        label {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #64748b;
+            margin-bottom: 5px;
+        }
 
-      .portfolio-link:hover {
-        color: #2563eb; /* Changes to your primary blue on hover */
-        text-decoration: underline;
-      }
+        input {
+            padding: 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-family: "Montserrat";
+            font-size: 14px;
+            outline: none;
+        }
+        
+        input:focus {
+            border-color: var(--primary);
+        }
 
-      /* Hide footer during printing */
-      @media print {
+        .btn-row {
+            margin-top: 25px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            border: none;
+            padding: 15px 25px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            flex: 1;
+            transition: opacity 0.2s;
+        }
+        
+        .btn:active { opacity: 0.8; }
+
+        .btn-save {
+            background: #0f172a;
+            color: white;
+        }
+
+        .btn-print {
+            background: var(--primary);
+            color: white;
+            font-size: 16px;
+        }
+
+        .btn-reset {
+            background: #cbd5e1;
+            color: #1e293b;
+            max-width: 120px;
+        }
+
+        /* --- Preview Window --- */
+        .preview-label {
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #475569;
+        }
+
+        .preview-window {
+            width: 100%;
+            overflow-x: auto;
+            background: #94a3b8;
+            padding: 20px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            box-sizing: border-box;
+        }
+
+        /* --- THE A4 PAGE --- */
+        .a4-page {
+            width: 210mm;
+            height: 297mm;
+            background-color: white;
+            background-image: url("TPForm_img.jpg");
+            background-size: 100% 100%;
+            position: relative;
+            flex-shrink: 0;
+            print-color-adjust: exact;
+            -webkit-print-color-adjust: exact;
+        }
+
+        .data-point {
+            position: absolute;
+            color: #000;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: move;
+            white-space: nowrap;
+        }
+
+        /* --- Footer --- */
         footer {
-          display: none !important;
+            padding: 30px 0;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: #64748b;
         }
-      }
+
+        .portfolio-link {
+            color: var(--accent);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .portfolio-link:hover {
+            color: var(--primary);
+            text-decoration: underline;
+        }
+
+        /* --- PRINT LOGIC --- */
+        @media print {
+            @page { margin: 0; }
+            .form-card, .preview-label, .btn-row, footer {
+                display: none !important;
+            }
+            body, .container, .preview-window {
+                background: white;
+                padding: 0;
+                margin: 0;
+                display: block;
+            }
+            .a4-page {
+                box-shadow: none;
+                margin: 0;
+                border: none;
+            }
+            .is-empty {
+                display: none !important;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .grid-inputs { grid-template-columns: 1fr; }
+        }
     </style>
-  </head>
-  <body>
+</head>
+<body>
+
     <div class="container">
-      <div class="form-card">
-        <h2 style="margin-top: 0; color: var(--primary)">RTO Entry Form</h2>
-        <div id="inputs" class="grid-inputs"></div>
+        <div class="form-card">
+            <h2 style="margin-top: 0; color: var(--primary)">RTO TP Form Entry</h2>
+            <div id="inputs" class="grid-inputs"></div>
 
-        <div class="btn-row">
-          <button class="btn btn-save" onclick="savePositions()">
-            💾 SAVE POSITIONS
-          </button>
-          <button class="btn btn-print" onclick="window.print()">
-            🖨️ PRINT FORM
-          </button>
+            <div class="btn-row">
+                <button class="btn btn-save" onclick="saveData()">💾 SAVE DATA & POSITIONS</button>
+                <button class="btn btn-print" onclick="window.print()">🖨️ PRINT FORM</button>
+                <button class="btn btn-reset" onclick="resetForm()">🔄 RESET</button>
+            </div>
         </div>
-      </div>
 
-      <div class="preview-label">
-        Live Preview (Drag items to align with image)
-      </div>
-      <div class="preview-window">
-        <div class="a4-page" id="form-page"></div>
-      </div>
-      <footer>
-    made with ❤️ 
-    <a href="https://msalihkc.github.io/mskc_pf/" class="portfolio-link" target="_blank">
-        mSalihKc
-    </a>
-</footer>
+        <div class="preview-label">Live Preview (Drag items to align)</div>
+        <div class="preview-window">
+            <div class="a4-page" id="form-page"></div>
+        </div>
+        
+        <footer>
+            made with ❤️ 
+            <a href="https://msalihkc.github.io/mskc_pf/" class="portfolio-link" target="_blank">mSalihKc</a>
+        </footer>
     </div>
 
     <script>
-      let today = new Date().toLocaleDateString("en-GB", {
-        year: "numeric",
-        month: "numeric",
-        day: "numeric",
-      });
-      /* ADDRESS HANDLING: I have split the address into 3 separate lines 
-       so you can drag each line onto the specific lines of your physical form.
-    */
-      const fields = [
-        {
-          id: "rto",
-          label: "RTO Office",
-          default: "Kozhikode",
-          top: "183px",
-          left: "97px",
-        },
-        {
-          id: "name",
-          label: "Full Name",
-          default: "",
-          top: "312px",
-          left: "400px",
-        },
-        {
-          id: "guardian",
-          label: "Father/Husband",
-          default: "",
-          top: "358px",
-          left: "400px",
-        },
-        {
-          id: "addr1",
-          label: "Address Line 1",
-          default: "",
-          top: "384px",
-          left: "400px",
-        },
-        {
-          id: "addr2",
-          label: "Address Line 2",
-          default: "",
-          top: "410px",
-          left: "400px",
-        },
-        {
-          id: "addr3",
-          label: "Address Line 3",
-          default: "",
-          top: "436px",
-          left: "400px",
-        },
-        {
-          id: "purpose",
-          label: "Purpose",
-          default: "For the convenience of Public",
-          top: "481px",
-          left: "400px",
-        },
-        {
-          id: "goods",
-          label: "Nature of Goods",
-          default: "P/L Only",
-          top: "525px",
-          left: "400px",
-        },
-        {
-          id: "route",
-          label: "Route/Area",
-          default: "Mavoor To Kozhikode",
-          top: "554px",
-          left: "400px",
-        },
-        {
-          id: "dur",
-          label: "Duration",
-          default: "20 Days",
-          top: "579px",
-          left: "400px",
-        },
-        {
-          id: "cap",
-          label: "Seating Capacity",
-          default: "38",
-          top: "626px",
-          left: "425px",
-        },
-        {
-          id: "reg",
-          label: "Reg Mark",
-          default: "KL-",
-          top: "679px",
-          left: "425px",
-        },
-        {
-          id: "ch",
-          label: "Chalan No",
-          default: "",
-          top: "743px",
-          left: "311px",
-        },
-        {
-          id: "amt",
-          label: "Amount Rs",
-          default: "610/-",
-          top: "770px",
-          left: "517px",
-        },
-        {
-          id: "date",
-          label: "Date",
-          default: today,
-          top: "1001px",
-          left: "140px",
-        },
-      ];
+        // Custom Date Format: DD/MM/YYYY
+        const d = new Date();
+        const formattedDate = `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
 
-      const inputContainer = document.getElementById("inputs");
-      const pageContainer = document.getElementById("form-page");
-      const savedPos =
-        JSON.parse(localStorage.getItem("rto_positions_final")) || {};
+        const fields = [
+            { id: "rto",      label: "RTO Office",      default: "Kozhikode", top: "183px",  left: "97px" },
+            { id: "name",     label: "Full Name",       default: "",          top: "312px",  left: "400px" },
+            { id: "guardian", label: "Father/Husband",  default: "",          top: "358px",  left: "400px" },
+            { id: "addr1",    label: "Address Line 1",  default: "",          top: "384px",  left: "400px" },
+            { id: "addr2",    label: "Address Line 2",  default: "",          top: "410px",  left: "400px" },
+            { id: "addr3",    label: "Address Line 3",  default: "",          top: "436px",  left: "400px" },
+            { id: "purpose",  label: "Purpose",         default: "For the convenience of Public", top: "481px", left: "400px" },
+            { id: "goods",    label: "Nature of Goods", default: "P/L Only",   top: "525px",  left: "400px" },
+            { id: "route",    label: "Route/Area",      default: "Mavoor To Kozhikode", top: "554px", left: "400px" },
+            { id: "dur",      label: "Duration",        default: "20 Days",   top: "579px",  left: "400px" },
+            { id: "cap",      label: "Seating Capacity",default: "38",        top: "626px",  left: "425px" },
+            { id: "reg",      label: "Reg Mark",        default: "KL-",       top: "679px",  left: "425px" },
+            { id: "ch",       label: "Chalan No",       default: "",          top: "743px",  left: "311px" },
+            { id: "amt",      label: "Amount Rs",       default: "610/-",     top: "770px",  left: "517px" },
+            { id: "date",     label: "Date",            default: formattedDate, top: "1001px", left: "140px" }
+        ];
 
-      fields.forEach((f) => {
-        // 1. Create Inputs
-        inputContainer.innerHTML += `
-            <div class="input-group">
-                <label>${f.label}</label>
-                <input type="text" id="in-${f.id}" value="${f.default}" oninput="updateText('${f.id}', this.value)">
-            </div>`;
+        const inputContainer = document.getElementById("inputs");
+        const pageContainer = document.getElementById("form-page");
+        
+        // Load stored data
+        const savedPos = JSON.parse(localStorage.getItem("rto_positions_final")) || {};
+        const savedData = JSON.parse(localStorage.getItem("rto_saved_data")) || {};
 
-        // 2. Create Preview Labels
-        const pos = savedPos[f.id] || { top: f.top, left: f.left };
-        const el = document.createElement("div");
-        el.id = `v-${f.id}`;
-        // If default is empty, mark as empty to hide during print
-        el.className =
-          "data-point " + (f.default.trim() === "" ? "is-empty" : "");
-        el.style.top = pos.top;
-        el.style.left = pos.left;
-        el.innerText = f.default || `[${f.label}]`;
-
-        pageContainer.appendChild(el);
-        makeDraggable(el, f.id);
-      });
-
-      function updateText(id, val) {
-        const target = document.getElementById("v-" + id);
-        if (val.trim() === "") {
-          target.innerText =
-            "[" + document.querySelector(`label[for="in-${id}"]`)?.innerText ||
-            id + "]";
-          target.classList.add("is-empty");
-        } else {
-          target.innerText = val;
-          target.classList.remove("is-empty");
-        }
-      }
-
-      function makeDraggable(el, id) {
-        let isDragging = false;
-        el.onmousedown = (e) => {
-          isDragging = true;
-          let shiftX = e.clientX - el.getBoundingClientRect().left;
-          let shiftY = e.clientY - el.getBoundingClientRect().top;
-          document.onmousemove = (e) => {
-            if (!isDragging) return;
-            let p = pageContainer.getBoundingClientRect();
-            el.style.left = e.clientX - p.left - shiftX + "px";
-            el.style.top = e.clientY - p.top - shiftY + "px";
-          };
-          document.onmouseup = () => {
-            isDragging = false;
-            document.onmousemove = null;
-          };
-        };
-        el.ondragstart = () => false;
-      }
-
-      function savePositions() {
-        const positions = {};
         fields.forEach((f) => {
-          const el = document.getElementById(`v-${f.id}`);
-          positions[f.id] = { top: el.style.top, left: el.style.left };
+            const currentVal = savedData[f.id] !== undefined ? savedData[f.id] : f.default;
+
+            // 1. Create Inputs
+            inputContainer.innerHTML += `
+                <div class="input-group">
+                    <label>${f.label}</label>
+                    <input type="text" id="in-${f.id}" value="${currentVal}" oninput="updateText('${f.id}', this.value)">
+                </div>`;
+
+            // 2. Create Preview Labels
+            const pos = savedPos[f.id] || { top: f.top, left: f.left };
+            const el = document.createElement("div");
+            el.id = `v-${f.id}`;
+            el.className = "data-point " + (currentVal.trim() === "" ? "is-empty" : "");
+            el.style.top = pos.top;
+            el.style.left = pos.left;
+            el.innerText = currentVal || `[${f.label}]`;
+
+            pageContainer.appendChild(el);
+            makeDraggable(el, f.id);
         });
-        localStorage.setItem("rto_positions_final", JSON.stringify(positions));
-        alert("Positions saved successfully!");
-      }
+
+        function updateText(id, val) {
+            const target = document.getElementById("v-" + id);
+            if (val.trim() === "") {
+                target.innerText = "[" + id.toUpperCase() + "]";
+                target.classList.add("is-empty");
+            } else {
+                target.innerText = val;
+                target.classList.remove("is-empty");
+            }
+        }
+
+        function makeDraggable(el, id) {
+            let isDragging = false;
+            el.onmousedown = (e) => {
+                isDragging = true;
+                let shiftX = e.clientX - el.getBoundingClientRect().left;
+                let shiftY = e.clientY - el.getBoundingClientRect().top;
+                document.onmousemove = (e) => {
+                    if (!isDragging) return;
+                    let p = pageContainer.getBoundingClientRect();
+                    el.style.left = e.clientX - p.left - shiftX + "px";
+                    el.style.top = e.clientY - p.top - shiftY + "px";
+                };
+                document.onmouseup = () => { isDragging = false; document.onmousemove = null; };
+            };
+            el.ondragstart = () => false;
+        }
+
+        function saveData() {
+            const positions = {};
+            const formData = {};
+            fields.forEach((f) => {
+                const el = document.getElementById(`v-${f.id}`);
+                const val = document.getElementById(`in-${f.id}`).value;
+                positions[f.id] = { top: el.style.top, left: el.style.left };
+                formData[f.id] = val;
+            });
+            localStorage.setItem("rto_positions_final", JSON.stringify(positions));
+            localStorage.setItem("rto_saved_data", JSON.stringify(formData));
+            alert("All progress saved!");
+        }
+
+        function resetForm() {
+            if(confirm("Clear all entered data? Positions will remain saved.")) {
+                fields.forEach(f => {
+                    document.getElementById(`in-${f.id}`).value = "";
+                    updateText(f.id, "");
+                });
+                localStorage.removeItem("rto_saved_data");
+            }
+        }
     </script>
-  </body>
+</body>
 </html>
