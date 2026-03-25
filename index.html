@@ -7,162 +7,43 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet" />
 
     <style>
-      :root {
-        --primary: #2563eb;
-        --bg: #f1f5f9;
-        --accent: #ef4444;
-      }
-      body {
-        font-family: "Montserrat", sans-serif;
-        margin: 0;
-        background: var(--bg);
-        color: #1e293b;
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-      }
-      .container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 20px;
-        flex: 1;
-      }
-      .form-card {
-        width: 100%;
-        max-width: 900px;
-        background: white;
-        padding: 30px;
-        border-radius: 12px;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        margin-bottom: 40px;
-        box-sizing: border-box;
-      }
-      .grid-inputs {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 15px;
-      }
-      .input-group {
-        display: flex;
-        flex-direction: column;
-      }
+      :root { --primary: #2563eb; --bg: #f1f5f9; --accent: #ef4444; }
+      body { font-family: "Montserrat", sans-serif; margin: 0; background: var(--bg); color: #1e293b; display: flex; flex-direction: column; min-height: 100vh; }
+      .container { display: flex; flex-direction: column; align-items: center; padding: 20px; flex: 1; }
+      .form-card { width: 100%; max-width: 900px; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); margin-bottom: 40px; box-sizing: border-box; }
+      .grid-inputs { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+      .input-group { display: flex; flex-direction: column; }
+      
+      /* --- Multi-Input Styling --- */
+      .v-num-wrapper { display: flex; align-items: center; border: 1px solid #cbd5e1; border-radius: 6px; padding: 2px 10px; background: #fff; width: fit-content; transition: border-color 0.2s; }
+      .v-num-wrapper:focus-within { border-color: #3b82f6; }
+      .v-num-wrapper input { border: none; outline: none; text-align: center; padding: 8px 0; font-size: 14px; text-transform: uppercase; background: transparent; }
+      .part-1, .part-2 { width: 35px; } .part-3 { width: 45px; } .part-4 { width: 60px; }
+      .v-num-sep { font-weight: bold; color: #94a3b8; padding: 0 4px; }
 
-      /* --- Vehicle Number & Reg Mark Multi-Input Styling --- */
-      .v-num-wrapper {
-        display: flex;
-        align-items: center;
-        border: 1px solid #cbd5e1;
-        border-radius: 6px;
-        padding: 2px 10px;
-        background: #fff;
-        width: fit-content;
-        transition: border-color 0.2s;
-      }
-
-      .v-num-wrapper:focus-within {
-        border-color: #3b82f6;
-        box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
-      }
-
-      .v-num-wrapper input {
-        border: none;
-        outline: none;
-        text-align: center;
-        padding: 8px 0;
-        font-size: 14px;
-        color: #334155;
-        background: transparent;
-      }
-
-      .part-1, .part-2 { width: 30px; }
-      .part-3 { width: 40px; }
-      .part-4 { width: 55px; }
-
-      .v-num-sep {
-        font-weight: bold;
-        color: #94a3b8;
-        padding: 0 4px;
-      }
-
-      label {
-        font-size: 10px;
-        font-weight: 700;
-        text-transform: uppercase;
-        color: #64748b;
-        margin-bottom: 5px;
-      }
-      input {
-        padding: 10px;
-        border: 1px solid #e2e8f0;
-        border-radius: 6px;
-        font-family: "Montserrat";
-        font-size: 14px;
-        outline: none;
-      }
+      label { font-size: 10px; font-weight: 700; text-transform: uppercase; color: #64748b; margin-bottom: 5px; }
+      input { padding: 10px; border: 1px solid #e2e8f0; border-radius: 6px; font-family: "Montserrat"; font-size: 14px; outline: none; }
       input:focus { border-color: var(--primary); }
-      .btn-row {
-        margin-top: 25px;
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-      }
-      .btn {
-        border: none;
-        padding: 15px 25px;
-        border-radius: 8px;
-        font-weight: 700;
-        cursor: pointer;
-        flex: 1;
-        transition: opacity 0.2s;
-      }
+
+      /* --- Signature Section --- */
+      .sig-section { margin-top: 30px; padding-top: 20px; border-top: 2px dashed #e2e8f0; }
+      #sig-canvas { border: 2px solid #cbd5e1; background: #fff; border-radius: 8px; cursor: crosshair; touch-action: none; width: 100%; max-width: 300px; height: 120px; }
+      .sig-btns { margin-top: 10px; }
+      .btn-clear { background: #fee2e2; color: #ef4444; padding: 8px 15px; font-size: 12px; border: none; border-radius: 4px; cursor: pointer; font-weight: 700; }
+
+      .btn-row { margin-top: 25px; display: flex; gap: 10px; flex-wrap: wrap; }
+      .btn { border: none; padding: 15px 25px; border-radius: 8px; font-weight: 700; cursor: pointer; flex: 1; transition: opacity 0.2s; }
       .btn-save { background: #0f172a; color: white; }
       .btn-print { background: var(--primary); color: white; font-size: 16px; }
-      .btn-reset { background: #cbd5e1; color: #1e293b; max-width: 120px; }
 
-      .preview-window {
-        width: 100%;
-        overflow-x: auto;
-        background: #94a3b8;
-        padding: 20px;
-        border-radius: 8px;
-        display: flex;
-        justify-content: center;
-        box-sizing: border-box;
-      }
-      .a4-page {
-        width: 210mm;
-        height: 297mm;
-        background-color: white;
-        background-image: url("TPForm_img.jpg");
-        background-size: 100% 100%;
-        position: relative;
-        flex-shrink: 0;
-        print-color-adjust: exact;
-      }
+      .preview-window { width: 100%; overflow-x: auto; background: #94a3b8; padding: 20px; border-radius: 8px; display: flex; justify-content: center; }
+      .a4-page { width: 210mm; height: 297mm; background-color: white; background-image: url("TPForm_img.jpg"); background-size: 100% 100%; position: relative; flex-shrink: 0; print-color-adjust: exact; }
+      
+      .data-point { position: absolute; color: #000; font-weight: 600; font-size: 15px; cursor: move; white-space: nowrap; }
+      .divider-line { height: 2px; background: black; width: 70px; }
+      #v-signature { width: 180px; height: auto; }
 
-      .data-point {
-        position: absolute;
-        color: #000;
-        font-weight: 600;
-        font-size: 15px;
-        cursor: move;
-        white-space: nowrap;
-      }
-
-      .divider-line {
-        height: 2px;
-        background: black;
-        width: 70px;
-      }
-
-      footer {
-        padding: 30px 0;
-        text-align: center;
-        font-size: 14px;
-        font-weight: 600;
-        color: #64748b;
-      }
+      footer { padding: 30px 0; text-align: center; font-size: 14px; font-weight: 600; color: #64748b; }
       .portfolio-link { color: var(--accent); text-decoration: none; }
 
       @media print {
@@ -175,11 +56,12 @@
     </style>
   </head>
   <body>
+
     <div class="container">
       <div class="form-card">
         <h2 style="margin-top: 0; color: var(--primary)">RTO TP Form Entry</h2>
 
-        <label>Fractional Vehicle Number</label>
+        <label>Fractional Vehicle Number (State - Dist - Series - Num)</label>
         <div class="v-num-wrapper" id="wrapper-fraction" style="margin-bottom: 20px">
           <input type="text" class="part-1" id="in-vn1" placeholder="KL" maxlength="2" />
           <span class="v-num-sep">-</span>
@@ -192,6 +74,14 @@
 
         <div id="inputs" class="grid-inputs"></div>
 
+        <div class="sig-section">
+            <label>Draw Signature of Applicant</label><br>
+            <canvas id="sig-canvas"></canvas>
+            <div class="sig-btns">
+                <button class="btn-clear" onclick="clearSignature()">❌ Clear Signature</button>
+            </div>
+        </div>
+
         <div class="btn-row">
           <button class="btn btn-save" onclick="saveData()">💾 SAVE DATA & POSITIONS</button>
           <button class="btn btn-print" onclick="window.print()">🖨️ PRINT FORM</button>
@@ -201,7 +91,8 @@
 
       <div class="preview-window">
         <div class="a4-page" id="form-page">
-          <div id="v-line1" class="data-point divider-line" style="top: 540px; left: 300px"></div>
+          <div id="v-line1" class="data-point divider-line"></div>
+          <img id="v-signature" class="data-point" src="" alt="" />
         </div>
       </div>
 
@@ -213,8 +104,8 @@
       const formattedDate = `${String(d.getDate()).padStart(2, "0")}/${String(d.getMonth() + 1).padStart(2, "0")}/${d.getFullYear()}`;
 
       const fields = [
-        { id: "vn1", label: "State", default: "", top: "540px", left: "300px", type: "fraction" },
-        { id: "vn2", label: "Dist", default: "", top: "540px", left: "330px", type: "fraction" },
+        { id: "vn1", label: "State", default: "KL", top: "540px", left: "300px", type: "fraction" },
+        { id: "vn2", label: "Dist", default: "11", top: "540px", left: "330px", type: "fraction" },
         { id: "vn3", label: "Series", default: "", top: "560px", left: "290px", type: "fraction" },
         { id: "vn4", label: "Num", default: "", top: "560px", left: "320px", type: "fraction" },
         { id: "rto", label: "RTO Office", default: "Kozhikode", top: "183px", left: "97px" },
@@ -236,14 +127,18 @@
 
       const inputContainer = document.getElementById("inputs");
       const pageContainer = document.getElementById("form-page");
+      const canvas = document.getElementById("sig-canvas");
+      const ctx = canvas.getContext("2d");
+      const sigImg = document.getElementById("v-signature");
+
       const savedPos = JSON.parse(localStorage.getItem("rto_positions_final")) || {};
       const savedData = JSON.parse(localStorage.getItem("rto_saved_data")) || {};
 
+      // 1. Initialize Fields
       fields.forEach((f) => {
         const currentVal = savedData[f.id] !== undefined ? savedData[f.id] : f.default;
 
         if (f.type === "multi") {
-          // Add the Special Multi-Input Box for Reg Mark
           inputContainer.innerHTML += `
             <div class="input-group">
                 <label>${f.label}</label>
@@ -258,45 +153,79 @@
                 </div>
             </div>`;
         } else if (!f.type) {
-          // Standard input fields
           inputContainer.innerHTML += `
             <div class="input-group">
                 <label>${f.label}</label>
                 <input type="text" id="in-${f.id}" value="${currentVal}" oninput="updateText('${f.id}', this.value)">
             </div>`;
         } else if (f.type === "fraction") {
-            // Values for top fraction are already handled by manual inputs in HTML
             document.getElementById(`in-${f.id}`).value = currentVal;
         }
 
-        const pos = savedPos[f.id] || { top: f.top, left: f.left };
         const el = document.createElement("div");
         el.id = `v-${f.id}`;
-        el.className = "data-point " + (currentVal.trim() === "" ? "is-empty" : "");
-        el.style.top = pos.top;
-        el.style.left = pos.left;
+        el.className = "data-point " + (currentVal.toString().trim() === "" ? "is-empty" : "");
+        el.style.top = savedPos[f.id]?.top || f.top;
+        el.style.left = savedPos[f.id]?.left || f.left;
         el.innerText = currentVal || `[${f.id}]`;
-
         pageContainer.appendChild(el);
         makeDraggable(el, f.id);
       });
 
-      // Special divider line
+      // 2. Signature Setup
+      ctx.lineWidth = 2; ctx.lineCap = "round"; ctx.strokeStyle = "#000";
+      let drawing = false;
+      const getPos = (e) => {
+          const rect = canvas.getBoundingClientRect();
+          const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+          const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+          return { x: clientX - rect.left, y: clientY - rect.top };
+      };
+      const start = (e) => { drawing = true; ctx.beginPath(); const p = getPos(e); ctx.moveTo(p.x, p.y); };
+      const draw = (e) => { if (!drawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); updateSigPreview(); };
+      const stop = () => drawing = false;
+
+      canvas.addEventListener("mousedown", start); canvas.addEventListener("mousemove", draw); canvas.addEventListener("mouseup", stop);
+      canvas.addEventListener("touchstart", (e) => { e.preventDefault(); start(e); });
+      canvas.addEventListener("touchmove", (e) => { e.preventDefault(); draw(e); });
+      canvas.addEventListener("touchend", stop);
+
+      function updateSigPreview() { sigImg.src = canvas.toDataURL(); sigImg.classList.remove("is-empty"); }
+      function clearSignature() { ctx.clearRect(0, 0, canvas.width, canvas.height); sigImg.src = ""; sigImg.classList.add("is-empty"); }
+
+      // 3. Draggable Elements Manual Config
+      sigImg.style.top = savedPos["signature"]?.top || "924px";
+      sigImg.style.left = savedPos["signature"]?.left || "520px";
+      makeDraggable(sigImg, "signature");
+
       const lineEl = document.getElementById("v-line1");
       lineEl.style.top = savedPos["line1"]?.top || "558px";
       lineEl.style.left = savedPos["line1"]?.left || "290px";
       makeDraggable(lineEl, "line1");
 
+      // 4. Input Helpers
+      function setupMultiInput(wrapperId, outputId, isFractional) {
+        const inputs = document.querySelectorAll(`#${wrapperId} input`);
+        inputs.forEach((input, index) => {
+          input.addEventListener("input", () => {
+            input.value = input.value.toUpperCase();
+            if (isFractional) updateText(input.id.replace("in-", ""), input.value);
+            else {
+                const combined = Array.from(inputs).map(i => i.value).join(" ").trim();
+                updateText(outputId, combined);
+            }
+            if (input.value.length >= input.maxLength && index < inputs.length - 1) inputs[index+1].focus();
+          });
+        });
+      }
+      setupMultiInput("wrapper-fraction", null, true);
+      setupMultiInput("wrapper-reg", "reg", false);
+
       function updateText(id, val) {
         const target = document.getElementById("v-" + id);
         if (!target) return;
-        if (val.trim() === "") {
-          target.innerText = "[" + id + "]";
-          target.classList.add("is-empty");
-        } else {
-          target.innerText = val;
-          target.classList.remove("is-empty");
-        }
+        target.innerText = val.trim() === "" ? "[" + id + "]" : val;
+        val.trim() === "" ? target.classList.add("is-empty") : target.classList.remove("is-empty");
       }
 
       function makeDraggable(el, id) {
@@ -311,81 +240,26 @@
             el.style.left = e.clientX - p.left - shiftX + "px";
             el.style.top = e.clientY - p.top - shiftY + "px";
           };
-          document.onmouseup = () => {
-            isDragging = false;
-            document.onmousemove = null;
-          };
+          document.onmouseup = () => { isDragging = false; document.onmousemove = null; };
         };
       }
 
-      /* --- Logic for ALL Multi-Inputs (Top and Reg Mark) --- */
-      function setupMultiInput(wrapperId, outputId, isFractional) {
-        const inputs = document.querySelectorAll(`#${wrapperId} input`);
-        inputs.forEach((input, index) => {
-          input.addEventListener("input", () => {
-            // Validation
-            if (index === 0 || index === 2) input.value = input.value.toUpperCase().replace(/[^A-Z]/g, '');
-            else input.value = input.value.replace(/[^0-9]/g, '');
-
-            if (isFractional) {
-                // If it's the top box, update vn1, vn2 etc individually
-                updateText(input.id.replace("in-", ""), input.value);
-            } else {
-                // If it's the Reg Mark box, combine them
-                const p1 = inputs[0].value;
-                const p2 = inputs[1].value;
-                const p3 = inputs[2].value;
-                const p4 = inputs[3].value;
-                let p2Disp = p2;
-                if (p2.length === 2 && p2.startsWith("0")) p2Disp = p2.substring(1);
-                const combined = `${p1} ${p2Disp} ${p3} ${p4}`.trim();
-                updateText(outputId, combined);
-            }
-
-            // Auto-tab
-            if (input.value.length >= input.maxLength && index < inputs.length - 1) inputs[index+1].focus();
-          });
-
-          input.addEventListener("keydown", (e) => {
-            if (e.key === "Backspace" && input.value.length === 0 && index > 0) inputs[index-1].focus();
-          });
-        });
-      }
-
-      setupMultiInput("wrapper-fraction", null, true);
-      setupMultiInput("wrapper-reg", "reg", false);
-
       function saveData() {
-        const positions = {};
-        const formData = {};
-        fields.forEach((f) => {
+        const positions = {}; const formData = {};
+        fields.forEach(f => {
           const el = document.getElementById(`v-${f.id}`);
           positions[f.id] = { top: el.style.top, left: el.style.left };
-          
-          if (f.type === "fraction") formData[f.id] = document.getElementById(`in-${f.id}`).value;
-          else if (f.type === "multi") {
-              const parts = document.querySelectorAll("#wrapper-reg input");
-              formData[f.id] = Array.from(parts).map(p => p.value).join("|"); // Store joined by pipe
-          }
-          else formData[f.id] = document.getElementById(`in-${f.id}`).value;
+          formData[f.id] = document.getElementById(`in-${f.id}`)?.value || "";
         });
-
+        positions["signature"] = { top: sigImg.style.top, left: sigImg.style.left };
+        positions["line1"] = { top: lineEl.style.top, left: lineEl.style.left };
         localStorage.setItem("rto_positions_final", JSON.stringify(positions));
         localStorage.setItem("rto_saved_data", JSON.stringify(formData));
-        alert("Saved!");
-      }
-
-      // Restore multi-part reg mark on load
-      if (savedData["reg"] && savedData["reg"].includes("|")) {
-          const parts = savedData["reg"].split("|");
-          const regInputs = document.querySelectorAll("#wrapper-reg input");
-          parts.forEach((val, i) => { if(regInputs[i]) regInputs[i].value = val; });
-          // Manually trigger one update to refresh preview
-          regInputs[0].dispatchEvent(new Event('input'));
+        alert("Positions, Signature Data, and Form Text Saved!");
       }
 
       function resetForm() {
-        if (confirm("Reset?")) {
+        if (confirm("Clear all data? Positions will be kept.")) {
           localStorage.removeItem("rto_saved_data");
           location.reload();
         }
