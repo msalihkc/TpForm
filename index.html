@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RTO Form Filler</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { --primary: #2563eb; --bg: #f1f5f9; }
+        body { font-family: 'Montserrat', sans-serif; margin: 0; background: var(--bg); color: #1e293b; }
+
+        /* --- Layout --- */
+        .container { display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        
+        /* --- Form Section --- */
+        .form-card { 
+            width: 100%; max-width: 900px; background: white; padding: 30px; 
+            border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); margin-bottom: 40px;
+            box-sizing: border-box;
+        }
+        .grid-inputs { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+        .input-group { display: flex; flex-direction: column; }
+        label { font-size: 10px; font-weight: 700; text-transform: uppercase; color: #64748b; margin-bottom: 5px; }
+        input { padding: 10px; border: 1px solid #e2e8f0; border-radius: 6px; font-family: 'Montserrat'; font-size: 14px; }
+        
+        .btn-row { margin-top: 25px; display: flex; gap: 10px; flex-wrap: wrap; }
+        .btn { border: none; padding: 15px 25px; border-radius: 8px; font-weight: 700; cursor: pointer; flex: 1; }
+        .btn-save { background: #0f172a; color: white; }
+        .btn-print { background: var(--primary); color: white; font-size: 16px; }
+
+        /* --- Preview Window --- */
+        .preview-label { font-weight: 700; margin-bottom: 10px; color: #475569; }
+        .preview-window { 
+            width: 100%; overflow-x: auto; background: #94a3b8; padding: 20px; 
+            border-radius: 8px; display: flex; justify-content: center; box-sizing: border-box;
+        }
+
+        /* --- THE A4 PAGE --- */
+        .a4-page {
+            width: 210mm; height: 297mm; background-color: white;
+            background-image: url('Tp_form_img.jpg'); /* YOUR IMAGE NAME */
+            background-size: 100% 100%; position: relative; flex-shrink: 0;
+        }
+
+        .data-point {
+            position: absolute; color: #000; font-weight: 600; font-size: 15px;
+            cursor: move; white-space: nowrap;
+        }
+
+        /* --- PRINT LOGIC --- */
+        @media print {
+            .form-card, .preview-label, .btn-row { display: none !important; }
+            body, .container, .preview-window { background: white; padding: 0; margin: 0; display: block; }
+            .a4-page { box-shadow: none; margin: 0; border: none; }
+            
+            /* Hide if data is empty or still contains the placeholder bracket */
+            .is-empty { display: none !important; }
+        }
+        
+        @media (max-width: 600px) { .grid-inputs { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="form-card">
+        <h2 style="margin-top:0; color:var(--primary)">RTO Entry Form</h2>
+        <div id="inputs" class="grid-inputs"></div>
+        
+        <div class="btn-row">
+            <button class="btn btn-save" onclick="savePositions()">💾 SAVE POSITIONS</button>
+            <button class="btn btn-print" onclick="window.print()">🖨️ PRINT FORM</button>
+        </div>
+    </div>
+
+    <div class="preview-label">Live Preview (Drag items to align with image)</div>
+    <div class="preview-window">
+        <div class="a4-page" id="form-page"></div>
+    </div>
+</div>
+
+<script>
+    /* WHERE TO EDIT:
+       1. Default Values: Change the 'default' string below.
+       2. Default Positions: Change 'top' and 'left' values below.
+    */
+    const fields = [
+        { id: 'rto',      label: 'RTO Office',      default: 'Kozhikode', top: '182px',  left: '97px' },
+        { id: 'name',     label: 'Full Name',       default: '',          top: '312px',  left: '400px'  },
+        { id: 'guardian', label: 'Father/Husband',  default: '',          top: '358px',  left: '400px'  },
+        { id: 'address',  label: 'Address',         default: '',          top: '384px',  left: '400px'  },
+        { id: 'purpose',  label: 'Purpose',         default: 'Renewal',   top: '115mm', left: '400px'  },
+        { id: 'goods',    label: 'Nature of Goods', default: 'General',   top: '130mm', left: '60mm'  },
+        { id: 'route',    label: 'Route/Area',      default: 'Kerala',    top: '145mm', left: '60mm'  },
+        { id: 'dur',      label: 'Duration',        default: '5 Years',   top: '160mm', left: '60mm'  },
+        { id: 'cap',      label: 'Seating Capacity',default: '1',         top: '175mm', left: '60mm'  },
+        { id: 'reg',      label: 'Reg Mark',        default: 'KL-',       top: '190mm', left: '60mm'  },
+        { id: 'ch',       label: 'Chalan No',       default: '',          top: '215mm', left: '40mm'  },
+        { id: 'amt',      label: 'Amount Rs',       default: '500',       top: '215mm', left: '90mm'  },
+        { id: 'date',     label: 'Date',            default: '',          top: '215mm', left: '140mm' }
+    ];
+
+    const inputContainer = document.getElementById('inputs');
+    const pageContainer = document.getElementById('form-page');
+    const savedPos = JSON.parse(localStorage.getItem('rto_positions_final')) || {};
+
+    fields.forEach((f) => {
+        // 1. Create Inputs with Default Values
+        inputContainer.innerHTML += `
+            <div class="input-group">
+                <label>${f.label}</label>
+                <input type="text" value="${f.default}" oninput="updateText('${f.id}', this.value)">
+            </div>`;
+
+        // 2. Create Preview Labels with Default Positions
+        const pos = savedPos[f.id] || { top: f.top, left: f.left };
+        const el = document.createElement('div');
+        el.id = `v-${f.id}`;
+        el.className = 'data-point ' + (f.default === '' ? 'is-empty' : '');
+        el.style.top = pos.top;
+        el.style.left = pos.left;
+        el.innerText = f.default || `[${f.label}]`;
+        
+        pageContainer.appendChild(el);
+        makeDraggable(el, f.id);
+    });
+
+    function updateText(id, val) {
+        const target = document.getElementById('v-' + id);
+        if (val.trim() === "") {
+            target.innerText = "[" + id + "]";
+            target.classList.add('is-empty');
+        } else {
+            target.innerText = val;
+            target.classList.remove('is-empty');
+        }
+    }
+
+    function makeDraggable(el, id) {
+        let isDragging = false;
+        el.onmousedown = (e) => {
+            isDragging = true;
+            let shiftX = e.clientX - el.getBoundingClientRect().left;
+            let shiftY = e.clientY - el.getBoundingClientRect().top;
+            document.onmousemove = (e) => {
+                if (!isDragging) return;
+                let p = pageContainer.getBoundingClientRect();
+                el.style.left = (e.clientX - p.left - shiftX) + 'px';
+                el.style.top = (e.clientY - p.top - shiftY) + 'px';
+            };
+            document.onmouseup = () => { isDragging = false; document.onmousemove = null; };
+        };
+        el.ondragstart = () => false;
+    }
+
+    function savePositions() {
+        const positions = {};
+        fields.forEach(f => {
+            const el = document.getElementById(`v-${f.id}`);
+            positions[f.id] = { top: el.style.top, left: el.style.left };
+        });
+        localStorage.setItem('rto_positions_final', JSON.stringify(positions));
+        alert("Positions saved successfully!");
+    }
+</script>
+
+</body>
+</html>
