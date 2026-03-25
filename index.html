@@ -1,269 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>RTO TP Form Pro - mSalihKc</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet" />
-
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Easy TP Form Filling</title>
     <style>
-      :root { --primary: #2563eb; --bg: #f1f5f9; --accent: #ef4444; }
-      body { font-family: "Montserrat", sans-serif; margin: 0; background: var(--bg); color: #1e293b; display: flex; flex-direction: column; min-height: 100vh; }
-      .container { display: flex; flex-direction: column; align-items: center; padding: 20px; flex: 1; }
-      .form-card { width: 100%; max-width: 900px; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); margin-bottom: 40px; box-sizing: border-box; }
-      .grid-inputs { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
-      .input-group { display: flex; flex-direction: column; }
-      
-      /* --- Multi-Input Styling --- */
-      .v-num-wrapper { display: flex; align-items: center; border: 1px solid #cbd5e1; border-radius: 6px; padding: 2px 10px; background: #fff; width: fit-content; transition: border-color 0.2s; }
-      .v-num-wrapper:focus-within { border-color: #3b82f6; }
-      .v-num-wrapper input { border: none; outline: none; text-align: center; padding: 8px 0; font-size: 14px; text-transform: uppercase; background: transparent; }
-      .part-1, .part-2 { width: 35px; } .part-3 { width: 45px; } .part-4 { width: 60px; }
-      .v-num-sep { font-weight: bold; color: #94a3b8; padding: 0 4px; }
+        :root {
+            --primary: #4f46e5;
+            --secondary: #0ea5e9;
+            --bg-dark: #0f172a;
+            --glass: rgba(255, 255, 255, 0.1);
+        }
 
-      label { font-size: 10px; font-weight: 700; text-transform: uppercase; color: #64748b; margin-bottom: 5px; }
-      input { padding: 10px; border: 1px solid #e2e8f0; border-radius: 6px; font-family: "Montserrat"; font-size: 14px; outline: none; }
-      input:focus { border-color: var(--primary); }
+        body {
+            padding: 0px 10px;
+            margin: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: white;
+            /* Animated Gradient Background */
+            background: linear-gradient(-45deg, #0f172a, #1e1b4b, #312e81, #1e3a8a);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            overflow: hidden;
+        }
 
-      /* --- Signature Section --- */
-      .sig-section { margin-top: 30px; padding-top: 20px; border-top: 2px dashed #e2e8f0; }
-      #sig-canvas { border: 2px solid #cbd5e1; background: #fff; border-radius: 8px; cursor: crosshair; touch-action: none; width: 100%; max-width: 300px; height: 120px; }
-      .sig-btns { margin-top: 10px; }
-      .btn-clear { background: #fee2e2; color: #ef4444; padding: 8px 15px; font-size: 12px; border: none; border-radius: 4px; cursor: pointer; font-weight: 700; }
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
 
-      .btn-row { margin-top: 25px; display: flex; gap: 10px; flex-wrap: wrap; }
-      .btn { border: none; padding: 15px 25px; border-radius: 8px; font-weight: 700; cursor: pointer; flex: 1; transition: opacity 0.2s; }
-      .btn-save { background: #0f172a; color: white; }
-      .btn-print { background: var(--primary); color: white; font-size: 16px; }
+        .container {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 3rem;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            transform: translateY(0);
+            animation: fadeIn 0.8s ease-out;
+        }
 
-      .preview-window { width: 100%; overflow-x: auto; background: #94a3b8; padding: 20px; border-radius: 8px; display: flex; justify-content: center; }
-      .a4-page { width: 210mm; height: 297mm; background-color: white; background-image: url("TPForm_img.jpg"); background-size: 100% 100%; position: relative; flex-shrink: 0; print-color-adjust: exact; }
-      
-      .data-point { position: absolute; color: #000; font-weight: 600; font-size: 15px; cursor: move; white-space: nowrap; }
-      .divider-line { height: 2px; background: black; width: 70px; }
-      #v-signature { width: 180px; height: auto; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-      footer { padding: 30px 0; text-align: center; font-size: 14px; font-weight: 600; color: #64748b; }
-      .portfolio-link { color: var(--accent); text-decoration: none; }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
 
-      @media print {
-        @page { margin: 0; }
-        .form-card, .btn-row, footer { display: none !important; }
-        body, .container, .preview-window { background: white; padding: 0; margin: 0; display: block; }
-        .a4-page { box-shadow: none; margin: 0; border: none; }
-        .is-empty { display: none !important; }
-      }
+        p {
+            color: #cbd5e1;
+            line-height: 1.6;
+            margin-bottom: 2.5rem;
+        }
+
+        .buttons-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
+            perspective: 1000px;
+        }
+
+        .btn-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1.2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Hover Effects */
+        .btn-card:hover {
+            background: var(--primary);
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 10px 20px -5px rgba(79, 70, 229, 0.5);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .btn-card:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        /* Subtle Glow Animation */
+        .btn-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .btn-card:hover::after {
+            opacity: 1;
+        }
     </style>
-  </head>
-  <body>
-
+</head>
+<body>
     <div class="container">
-      <div class="form-card">
-        <h2 style="margin-top: 0; color: var(--primary)">RTO TP Form Entry</h2>
-
-        <label>Fractional Vehicle Number (State - Dist - Series - Num)</label>
-        <div class="v-num-wrapper" id="wrapper-fraction" style="margin-bottom: 20px">
-          <input type="text" class="part-1" id="in-vn1" placeholder="KL" maxlength="2" />
-          <span class="v-num-sep">-</span>
-          <input type="text" class="part-2" id="in-vn2" placeholder="11" maxlength="2" />
-          <span class="v-num-sep">-</span>
-          <input type="text" class="part-3" id="in-vn3" placeholder="XX" maxlength="2" />
-          <span class="v-num-sep">-</span>
-          <input type="text" class="part-4" id="in-vn4" placeholder="0000" maxlength="4" />
+        <h1>Easy TP Filling</h1>
+        <p>Streamline your RTO paperwork with our automated TP form generator. Fast, accurate, and ready to print.</p>
+        
+        <div class="buttons-container">
+            <a href="tpForm.html">
+                <div class="btn-card">📄 Open TP Form</div>
+            </a>
+            <a href="tpApply.html">
+                <div class="btn-card">⚡ New TP Application</div>
+            </a>
         </div>
-
-        <div id="inputs" class="grid-inputs"></div>
-
-        <div class="sig-section">
-            <label>Draw Signature of Applicant</label><br>
-            <canvas id="sig-canvas"></canvas>
-            <div class="sig-btns">
-                <button class="btn-clear" onclick="clearSignature()">❌ Clear Signature</button>
-            </div>
-        </div>
-
-        <div class="btn-row">
-          <button class="btn btn-save" onclick="saveData()">💾 SAVE DATA & POSITIONS</button>
-          <button class="btn btn-print" onclick="window.print()">🖨️ PRINT FORM</button>
-          <button class="btn btn-reset" onclick="resetForm()">🔄 RESET</button>
-        </div>
-      </div>
-
-      <div class="preview-window">
-        <div class="a4-page" id="form-page">
-          <div id="v-line1" class="data-point divider-line"></div>
-          <img id="v-signature" class="data-point" src="" alt="" />
-        </div>
-      </div>
-
-      <footer>made with ❤️ <a href="https://msalihkc.github.io/mskc_pf/" class="portfolio-link" target="_blank">mSalihKc</a></footer>
     </div>
-
-    <script>
-      const d = new Date();
-      const formattedDate = `${String(d.getDate()).padStart(2, "0")}/${String(d.getMonth() + 1).padStart(2, "0")}/${d.getFullYear()}`;
-
-      const fields = [
-        { id: "vn1", label: "State", default: "KL", top: "540px", left: "300px", type: "fraction" },
-        { id: "vn2", label: "Dist", default: "11", top: "540px", left: "330px", type: "fraction" },
-        { id: "vn3", label: "Series", default: "", top: "560px", left: "290px", type: "fraction" },
-        { id: "vn4", label: "Num", default: "", top: "560px", left: "320px", type: "fraction" },
-        { id: "rto", label: "RTO Office", default: "Kozhikode", top: "183px", left: "97px" },
-        { id: "name", label: "Full Name", default: "", top: "312px", left: "400px" },
-        { id: "guardian", label: "Father/Husband", default: "", top: "358px", left: "400px" },
-        { id: "addr1", label: "Address Line 1", default: "", top: "384px", left: "400px" },
-        { id: "addr2", label: "Address Line 2", default: "", top: "410px", left: "400px" },
-        { id: "addr3", label: "Address Line 3", default: "", top: "436px", left: "400px" },
-        { id: "purpose", label: "Purpose", default: "For the convenience of Public", top: "481px", left: "400px" },
-        { id: "goods", label: "Nature of Goods", default: "P/L Only", top: "525px", left: "400px" },
-        { id: "reg", label: "Reg Mark", default: "", top: "679px", left: "425px", type: "multi" },
-        { id: "route", label: "Route/Area", default: "Mavoor To Kozhikode", top: "554px", left: "400px" },
-        { id: "dur", label: "Duration", default: "20 Days", top: "579px", left: "400px" },
-        { id: "cap", label: "Seating Capacity", default: "38", top: "626px", left: "425px" },
-        { id: "ch", label: "Chalan No", default: "", top: "743px", left: "311px" },
-        { id: "amt", label: "Amount Rs", default: "610/-", top: "770px", left: "517px" },
-        { id: "date", label: "Date", default: formattedDate, top: "1001px", left: "140px" },
-      ];
-
-      const inputContainer = document.getElementById("inputs");
-      const pageContainer = document.getElementById("form-page");
-      const canvas = document.getElementById("sig-canvas");
-      const ctx = canvas.getContext("2d");
-      const sigImg = document.getElementById("v-signature");
-
-      const savedPos = JSON.parse(localStorage.getItem("rto_positions_final")) || {};
-      const savedData = JSON.parse(localStorage.getItem("rto_saved_data")) || {};
-
-      // 1. Initialize Fields
-      fields.forEach((f) => {
-        const currentVal = savedData[f.id] !== undefined ? savedData[f.id] : f.default;
-
-        if (f.type === "multi") {
-          inputContainer.innerHTML += `
-            <div class="input-group">
-                <label>${f.label}</label>
-                <div class="v-num-wrapper" id="wrapper-reg">
-                    <input type="text" class="part-1" id="reg-p1" placeholder="KL" maxlength="2" />
-                    <span class="v-num-sep">-</span>
-                    <input type="text" class="part-2" id="reg-p2" placeholder="11" maxlength="2" />
-                    <span class="v-num-sep">-</span>
-                    <input type="text" class="part-3" id="reg-p3" placeholder="XX" maxlength="2" />
-                    <span class="v-num-sep">-</span>
-                    <input type="text" class="part-4" id="reg-p4" placeholder="0000" maxlength="4" />
-                </div>
-            </div>`;
-        } else if (!f.type) {
-          inputContainer.innerHTML += `
-            <div class="input-group">
-                <label>${f.label}</label>
-                <input type="text" id="in-${f.id}" value="${currentVal}" oninput="updateText('${f.id}', this.value)">
-            </div>`;
-        } else if (f.type === "fraction") {
-            document.getElementById(`in-${f.id}`).value = currentVal;
-        }
-
-        const el = document.createElement("div");
-        el.id = `v-${f.id}`;
-        el.className = "data-point " + (currentVal.toString().trim() === "" ? "is-empty" : "");
-        el.style.top = savedPos[f.id]?.top || f.top;
-        el.style.left = savedPos[f.id]?.left || f.left;
-        el.innerText = currentVal || `[${f.id}]`;
-        pageContainer.appendChild(el);
-        makeDraggable(el, f.id);
-      });
-
-      // 2. Signature Setup
-      ctx.lineWidth = 2; ctx.lineCap = "round"; ctx.strokeStyle = "#000";
-      let drawing = false;
-      const getPos = (e) => {
-          const rect = canvas.getBoundingClientRect();
-          const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-          const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-          return { x: clientX - rect.left, y: clientY - rect.top };
-      };
-      const start = (e) => { drawing = true; ctx.beginPath(); const p = getPos(e); ctx.moveTo(p.x, p.y); };
-      const draw = (e) => { if (!drawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); updateSigPreview(); };
-      const stop = () => drawing = false;
-
-      canvas.addEventListener("mousedown", start); canvas.addEventListener("mousemove", draw); canvas.addEventListener("mouseup", stop);
-      canvas.addEventListener("touchstart", (e) => { e.preventDefault(); start(e); });
-      canvas.addEventListener("touchmove", (e) => { e.preventDefault(); draw(e); });
-      canvas.addEventListener("touchend", stop);
-
-      function updateSigPreview() { sigImg.src = canvas.toDataURL(); sigImg.classList.remove("is-empty"); }
-      function clearSignature() { ctx.clearRect(0, 0, canvas.width, canvas.height); sigImg.src = ""; sigImg.classList.add("is-empty"); }
-
-      // 3. Draggable Elements Manual Config
-      sigImg.style.top = savedPos["signature"]?.top || "924px";
-      sigImg.style.left = savedPos["signature"]?.left || "520px";
-      makeDraggable(sigImg, "signature");
-
-      const lineEl = document.getElementById("v-line1");
-      lineEl.style.top = savedPos["line1"]?.top || "558px";
-      lineEl.style.left = savedPos["line1"]?.left || "290px";
-      makeDraggable(lineEl, "line1");
-
-      // 4. Input Helpers
-      function setupMultiInput(wrapperId, outputId, isFractional) {
-        const inputs = document.querySelectorAll(`#${wrapperId} input`);
-        inputs.forEach((input, index) => {
-          input.addEventListener("input", () => {
-            input.value = input.value.toUpperCase();
-            if (isFractional) updateText(input.id.replace("in-", ""), input.value);
-            else {
-                const combined = Array.from(inputs).map(i => i.value).join(" ").trim();
-                updateText(outputId, combined);
-            }
-            if (input.value.length >= input.maxLength && index < inputs.length - 1) inputs[index+1].focus();
-          });
-        });
-      }
-      setupMultiInput("wrapper-fraction", null, true);
-      setupMultiInput("wrapper-reg", "reg", false);
-
-      function updateText(id, val) {
-        const target = document.getElementById("v-" + id);
-        if (!target) return;
-        target.innerText = val.trim() === "" ? "[" + id + "]" : val;
-        val.trim() === "" ? target.classList.add("is-empty") : target.classList.remove("is-empty");
-      }
-
-      function makeDraggable(el, id) {
-        let isDragging = false;
-        el.onmousedown = (e) => {
-          isDragging = true;
-          let shiftX = e.clientX - el.getBoundingClientRect().left;
-          let shiftY = e.clientY - el.getBoundingClientRect().top;
-          document.onmousemove = (e) => {
-            if (!isDragging) return;
-            let p = pageContainer.getBoundingClientRect();
-            el.style.left = e.clientX - p.left - shiftX + "px";
-            el.style.top = e.clientY - p.top - shiftY + "px";
-          };
-          document.onmouseup = () => { isDragging = false; document.onmousemove = null; };
-        };
-      }
-
-      function saveData() {
-        const positions = {}; const formData = {};
-        fields.forEach(f => {
-          const el = document.getElementById(`v-${f.id}`);
-          positions[f.id] = { top: el.style.top, left: el.style.left };
-          formData[f.id] = document.getElementById(`in-${f.id}`)?.value || "";
-        });
-        positions["signature"] = { top: sigImg.style.top, left: sigImg.style.left };
-        positions["line1"] = { top: lineEl.style.top, left: lineEl.style.left };
-        localStorage.setItem("rto_positions_final", JSON.stringify(positions));
-        localStorage.setItem("rto_saved_data", JSON.stringify(formData));
-        alert("Positions, Signature Data, and Form Text Saved!");
-      }
-
-      function resetForm() {
-        if (confirm("Clear all data? Positions will be kept.")) {
-          localStorage.removeItem("rto_saved_data");
-          location.reload();
-        }
-      }
-    </script>
-  </body>
+</body>
 </html>

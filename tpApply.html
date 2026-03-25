@@ -1,0 +1,518 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RTO Application Pro - Malayalam</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Anek+Malayalam:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --primary: #2563eb; /* Blue */
+        --bg: #f1f5f9; /* Slate Light */
+        --accent: #ef4444; /* Red */
+        --dark: #0f172a; /* Navy */
+        --a4-width: 210mm;
+        --a4-height: 297mm;
+      }
+
+      body {
+        font-family: "Montserrat", sans-serif;
+        margin: 0;
+        background: var(--bg);
+        color: #1e293b;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        flex: 1;
+      }
+
+      /* --- Input Card Styling --- */
+      .form-card {
+        width: 100%;
+        max-width: 900px;
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+        box-sizing: border-box;
+      }
+
+      .grid-inputs {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+      }
+
+      .input-group {
+        display: flex;
+        flex-direction: column;
+      }
+
+      label {
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: #64748b;
+        margin-bottom: 6px;
+      }
+
+      input,
+      textarea {
+        padding: 12px;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        font-family:
+          "Anek Malayalam", sans-serif; /* Support for Malayalam typing */
+        font-size: 14px;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+
+      input:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+      }
+
+      /* --- Multi-Input Vehicle Number --- */
+      .v-num-wrapper {
+        display: flex;
+        align-items: center;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        padding: 2px 10px;
+        background: #fff;
+        width: fit-content;
+      }
+
+      .v-num-wrapper input {
+        border: none !important;
+        text-align: center;
+        padding: 10px 0;
+        width: 45px;
+        font-weight: 700;
+      }
+      .v-num-wrapper .part-4 {
+        width: 65px;
+      }
+
+      .v-num-sep {
+        font-weight: bold;
+        color: #94a3b8;
+        padding: 0 5px;
+      }
+
+      /* --- Buttons --- */
+      .btn-row {
+        margin-top: 30px;
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .btn {
+        border: none;
+        padding: 15px 25px;
+        border-radius: 8px;
+        font-weight: 700;
+        cursor: pointer;
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        transition: transform 0.1s;
+      }
+      .btn:active {
+        transform: scale(0.98);
+      }
+      .btn-print {
+        background: var(--primary);
+        color: white;
+      }
+      .btn-reset {
+        background: #cbd5e1;
+        color: #1e293b;
+      }
+
+      /* --- Preview Window --- */
+      .preview-window {
+        width: 100%;
+        overflow: auto;
+        background: #94a3b8;
+        padding: 40px 20px;
+        border-radius: 12px;
+        display: flex;
+        justify-content: center;
+        box-sizing: border-box;
+      }
+
+      .a4-page {
+        width: var(--a4-width);
+        height: var(--a4-height);
+        background-color: white;
+        background-image: url("tp_appl_img.jpg");
+        background-size: 100% 100%;
+        position: relative;
+        flex-shrink: 0;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      }
+
+      /* --- Live Text Overlay --- */
+      .data-point {
+        position: absolute;
+        color: #000;
+        font-family: "Anek Malayalam", sans-serif;
+        font-size: 15px;
+        white-space: pre-wrap;
+        pointer-events: none; /* Allows clicking things behind if needed */
+      }
+
+      /* Edit these percentages to move text on the layout */
+      #out-name {
+        top: 200px;
+        left: 125px;
+      }
+      #out-father {
+        top: 221px;
+        left: 125px;
+      }
+      #out-address {
+        top: 243px;
+        left: 125px;
+        width: 50%;
+      }
+      #out-reg {
+        top: 535px;
+        left: 374px;
+        font-weight: 700;
+      }
+      #out-rto {
+        top: 398px;
+        left: 125px;
+      }
+      #out-place {
+        bottom: 350px;
+        left: 100px;
+      }
+      #out-date {
+        bottom: 330px;
+        left: 100px;
+      }
+      #out-sign-name {
+        bottom: 410px;
+        right: 200px;
+        font-weight: 700;
+      }
+
+      footer {
+        padding: 40px 0;
+        text-align: center;
+        font-size: 14px;
+        font-weight: 600;
+        color: #64748b;
+      }
+
+      @media print {
+        .form-card,
+        footer,
+        .btn-row {
+          display: none !important;
+        }
+        body,
+        .container,
+        .preview-window {
+          background: white;
+          padding: 0;
+          margin: 0;
+          display: block;
+        }
+        .a4-page {
+          box-shadow: none;
+          margin: 0;
+          border: none;
+          width: 100%;
+        }
+      }
+
+      /* Responsive */
+      @media (max-width: 600px) {
+        .grid-inputs {
+          grid-template-columns: 1fr;
+        }
+        .preview-window {
+          padding: 10px;
+        }
+        .a4-page {
+          transform: scale(0.45);
+          transform-origin: top center;
+        }
+        .preview-window {
+          height: 500px;
+        } /* Prevent infinite scroll on mobile */
+      }
+
+      /* Floating Back Button */
+      .back-btn {
+        position: fixed;
+        bottom: 25px;
+        right: 25px;
+        width: 50px;
+        height: 50px;
+        background-color: var(
+          --dark
+        ); /* Matches the dark navy from the save button */
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-decoration: none;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        z-index: 1000;
+        transition:
+          transform 0.2s,
+          background-color 0.2s;
+      }
+
+      .back-btn:hover {
+        background-color: var(--primary); /* Turns blue on hover */
+        transform: scale(1.1);
+      }
+
+      .back-btn svg {
+        width: 24px;
+        height: 24px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 3;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      /* Hide back button during printing */
+      @media print {
+        .back-btn {
+          display: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <a href="index.html" class="back-btn" title="Go Back">
+      <svg viewBox="0 0 24 24">
+        <path d="M19 12H5M12 19l-7-7 7-7" />
+      </svg>
+    </a>
+    <div class="container">
+      <div class="form-card">
+        <h2 style="margin-top: 0; color: var(--primary)">
+          RTO Application Entry
+        </h2>
+
+        <div class="grid-inputs">
+          <div class="input-group">
+            <label>Full Name</label>
+            <input
+              type="text"
+              id="in-name"
+              placeholder="Enter Name"
+              oninput="updateAll()"
+            />
+          </div>
+
+          <div class="input-group">
+            <label>Father/Husband Name</label>
+            <input
+              type="text"
+              id="in-father"
+              placeholder="Enter Guardian Name"
+              oninput="updateAll()"
+            />
+          </div>
+
+          <div class="input-group" style="grid-column: span 1">
+            <label>Vehicle Reg Number</label>
+            <div class="v-num-wrapper" id="wrapper-reg">
+              <input
+                type="text"
+                class="part-1"
+                id="reg1"
+                maxlength="2"
+                placeholder="KL"
+              />
+              <span class="v-num-sep">-</span>
+              <input
+                type="text"
+                class="part-2"
+                id="reg2"
+                maxlength="2"
+                placeholder="11"
+              />
+              <span class="v-num-sep">-</span>
+              <input
+                type="text"
+                class="part-3"
+                id="reg3"
+                maxlength="2"
+                placeholder="AS"
+              />
+              <span class="v-num-sep">-</span>
+              <input
+                type="text"
+                class="part-4"
+                id="reg4"
+                maxlength="4"
+                placeholder="1234"
+              />
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label>RTO Office</label>
+            <input
+              type="text"
+              id="in-rto"
+              placeholder="e.g. Kozhikode"
+              oninput="updateAll()"
+            />
+          </div>
+
+          <div class="input-group" style="grid-column: auto">
+            <label>Address</label>
+            <textarea
+              id="in-address"
+              rows="2"
+              placeholder="Line 1, Line 2..."
+              oninput="updateAll()"
+            ></textarea>
+          </div>
+
+          <div class="input-group">
+            <label>Place</label>
+            <input
+              type="text"
+              id="in-place"
+              placeholder="Enter Place"
+              oninput="updateAll()"
+            />
+          </div>
+
+          <div class="input-group">
+            <label>Date</label>
+            <input type="text" id="in-date" oninput="updateAll()" />
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-print" onclick="window.print()">
+            🖨️ PRINT APPLICATION
+          </button>
+          <button class="btn btn-reset" onclick="resetForm()">🔄 RESET</button>
+        </div>
+      </div>
+
+      <div class="preview-window">
+        <div class="a4-page" id="form-page">
+          <div id="out-name" class="data-point"></div>
+          <div id="out-father" class="data-point"></div>
+          <div id="out-address" class="data-point"></div>
+          <div id="out-reg" class="data-point"></div>
+          <div id="out-rto" class="data-point"></div>
+          <div id="out-place" class="data-point"></div>
+          <div id="out-date" class="data-point"></div>
+          <div id="out-sign-name" class="data-point"></div>
+        </div>
+      </div>
+
+      <footer>
+        made with ❤️ <a href="#" class="portfolio-link">mSalihKc</a>
+      </footer>
+    </div>
+
+    <script>
+      // Set Default Date
+      const d = new Date();
+      const today = `${String(d.getDate()).padStart(2, "0")}.${String(d.getMonth() + 1).padStart(2, "0")}.${d.getFullYear()}`;
+      document.getElementById("in-date").value = today;
+
+      const regInputs = [
+        document.getElementById("reg1"),
+        document.getElementById("reg2"),
+        document.getElementById("reg3"),
+        document.getElementById("reg4"),
+      ];
+
+      // Reg Input Logic
+      regInputs.forEach((input, index) => {
+        input.addEventListener("input", (e) => {
+          if (index === 0 || index === 2)
+            e.target.value = e.target.value
+              .toUpperCase()
+              .replace(/[^A-Z]/g, "");
+          else e.target.value = e.target.value.replace(/[^0-9]/g, "");
+
+          if (e.target.value.length === e.target.maxLength && index < 3)
+            regInputs[index + 1].focus();
+          updateAll();
+        });
+        input.addEventListener("keydown", (e) => {
+          if (e.key === "Backspace" && input.value === "" && index > 0)
+            regInputs[index - 1].focus();
+        });
+      });
+
+      function updateAll() {
+        // Text values
+        const name = document.getElementById("in-name").value;
+        document.getElementById("out-name").innerText = name;
+        document.getElementById("out-sign-name").innerText = name; // Signature Part
+
+        document.getElementById("out-father").innerText =
+          document.getElementById("in-father").value;
+        document.getElementById("out-address").innerText =
+          document.getElementById("in-address").value;
+        document.getElementById("out-rto").innerText =
+          document.getElementById("in-rto").value;
+        document.getElementById("out-place").innerText =
+          document.getElementById("in-place").value;
+        document.getElementById("out-date").innerText =
+          document.getElementById("in-date").value;
+
+        // Registration Number with Leading Zero Logic
+        let p1 = regInputs[0].value;
+        let p2 = regInputs[1].value;
+        let p3 = regInputs[2].value;
+        let p4 = regInputs[3].value;
+
+        if (p2.length === 2 && p2.startsWith("0")) p2 = p2.substring(1);
+
+        const combined = p1 || p2 || p3 || p4 ? `${p1} ${p2} ${p3} ${p4}` : "";
+        document.getElementById("out-reg").innerText = combined;
+      }
+
+      function resetForm() {
+        if (confirm("Are you sure you want to clear all fields?")) {
+          document
+            .querySelectorAll("input, textarea")
+            .forEach((el) => (el.value = ""));
+          document.getElementById("in-date").value = today;
+          updateAll();
+        }
+      }
+
+      // Initialize
+      updateAll();
+    </script>
+  </body>
+</html>
